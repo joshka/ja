@@ -1,0 +1,12 @@
+[package]
+name = "ja"
+version = "0.0.0"
+authors = ["Josh McKinney"]
+edition = "2021"
+description = "ja (just ask) is a small CLI / TUI app that allows you to work with AI tools"
+repository = "https://github.com/joshka/ja"
+license = "MIT"
+keywords = ["cli", "openai", "gpt", "tui", "ai"]
+categories = ["command-line-utilities"]
+
+[dependencies]
