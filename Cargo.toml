@@ -1,6 +1,6 @@
 [package]
 name = "ja"
-version = "0.0.0"
+version = "0.1.0"
 authors = ["Josh McKinney"]
 edition = "2021"
 description = "ja (just ask) is a small CLI / TUI app that allows you to work with AI tools"
@@ -10,3 +10,14 @@ keywords = ["cli", "openai", "gpt", "tui", "ai"]
 categories = ["command-line-utilities"]
 
 [dependencies]
+anyhow = "1.0.71"
+async-openai = "0.10.3"
+clap = { version = "4.2.7", features = ["derive"] }
+crossterm = "0.26.1"
+derive_builder= "0.12.0"
+directories = "5.0.1"
+futures = "0.3.28"
+serde = "1.0.162"
+serde_json = "1.0.96"
+time = { version = "0.3.21", features = ["formatting"] }
+tokio = { version = "1.28.0", features = ["rt-multi-thread"] }
