@@ -22,7 +22,12 @@ body = """
 {% for group, commits in commits | group_by(attribute="group") %}
     ### {{ group | upper_first }}
     {% for commit in commits %}
-        - {% if commit.breaking %}[**breaking**] {% endif %}{{ commit.message | upper_first }}\
+        - ([{{commit.id | truncate(length=8, end="") }}](https://github.com/joshka/ja/commit/{{ commit.id }}))\
+          {% if commit.breaking %}[**breaking**] {% endif %}
+          {{ commit.message | upper_first | indent(first=true, prefix="  ") -}}
+          {% if commit.body -%}{{ "\n" | indent(first=true, prefix="  ") }}
+            {{ commit.body | indent(first=true, prefix="  ") -}}
+          {% endif -%}
     {% endfor %}
 {% endfor %}\n
 """
