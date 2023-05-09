@@ -1,6 +1,6 @@
 [package]
 name = "ja"
-version = "0.1.1"
+version = "0.1.2"
 authors = ["Josh McKinney"]
 edition = "2021"
 description = "ja (just ask) is a small CLI / TUI app that allows you to work with AI tools"
