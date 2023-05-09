@@ -1,6 +1,2 @@
 # from https://github.com/crate-ci/cargo-release/blob/master/docs/faq.md
-pre-release-replacements = [
-  {file="CHANGELOG.md", search="Unreleased", replace="{{version}}"},
-  {file="CHANGELOG.md", search="ReleaseDate", replace="{{date}}"},
-]
-pre-release-hook = ["git", "cliff", "-o", "CHANGELOG.md"]
+pre-release-hook = ["git", "cliff", "-o", "CHANGELOG.md", "--tag", "{{version}}" ]
