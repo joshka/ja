@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased] - ReleaseDate
+
+### Features
+
+- Add input handling and error handling
+
+### Miscellaneous Tasks
+
+- Add changelog and git-cliff config
+- Configure cargo release
+
 ## [0.1.0] - 2023-05-08
 
 ### Features

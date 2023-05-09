@@ -33,9 +33,35 @@ Options:
           Print version
 ```
 
+Example usage:
+
+Provide command line paramters directly:
+
+```text
+$ ja hello
+assistant: Hello! How can I assist you today?
+```
+
+Provide input via a pipe:
+
+```text
+$ echo "hello" | ja
+assistant: Hello! How can I assist you today?
+```
+
+Run interactively:
+
+```text
+$ ja
+Enter your input (finish with ^D):
+hello
+assistant: Hello! How can I assist you today?
+```
+
 ## TODO
 
 - [x] stores logs in cache dir (use --verbose to see the filename)
-- [ ] accept input from stdin
+- [x] accept input from stdin
+- [x] interactive mode
 - [ ] syntax highlight code
 - [ ] tui mode

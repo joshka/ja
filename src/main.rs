@@ -8,6 +8,7 @@ use async_openai::{
     },
     Client,
 };
+use atty::Stream;
 use clap::{Parser, ValueEnum};
 use derive_builder::Builder;
 use directories::ProjectDirs;
@@ -16,8 +17,9 @@ use serde::{Deserialize, Serialize};
 use std::{
     fmt::Debug,
     fs::{create_dir_all, File},
-    io::{stderr, stdout, Write},
+    io::{stderr, stdin, stdout, Read, Write},
     path::PathBuf,
+    process::exit,
 };
 use time::format_description::well_known::Iso8601;
 use time::OffsetDateTime;
@@ -69,11 +71,7 @@ fn from_chat_stream(value: CreateChatCompletionStreamResponse) -> CreateChatComp
         object: value.object,
         created: value.created,
         model: value.model,
-        choices: value
-            .choices
-            .into_iter()
-            .map(|c| from_choice_delta(c))
-            .collect(),
+        choices: value.choices.into_iter().map(from_choice_delta).collect(),
         usage: value.usage,
     }
 }
@@ -100,11 +98,16 @@ async fn main() -> Result<()> {
     if cli.verbose {
         writeln!(stderr(), "writing to {path:?}")?;
     }
+    let mut stdout = stdout().lock();
 
-    let request = create_request(cli.model, cli.temperature, cli.input.join(" "))?;
+    let input = get_input(&cli, &mut stdout)?;
+    if input.trim().is_empty() {
+        writeln!(stderr(), "no input")?;
+        exit(1);
+    }
+    let request = create_request(cli.model, cli.temperature, input)?;
     let mut stream = Client::new().chat().create_stream(request.clone()).await?;
     let mut response = None;
-    let mut lock = stdout().lock();
     while let Some(result) = stream.next().await {
         match result {
             Ok(stream_response) => {
@@ -113,19 +116,19 @@ async fn main() -> Result<()> {
                 let stream_choice = stream_response.choices.get(0).unwrap();
                 let mut response_choice = response.choices.get_mut(0).unwrap();
                 if let Some(ref content) = stream_choice.delta.content {
-                    write!(lock, "{}", content)?;
+                    write!(stdout, "{}", content)?;
                     response_choice.message.content.push_str(content);
                 }
                 if let Some(ref role) = stream_choice.delta.role {
-                    write!(lock, "{}: ", role)?;
+                    write!(stdout, "{}: ", role)?;
                     response_choice.message.role = role.clone();
                 }
             }
             Err(err) => {
-                writeln!(lock, "error: {err}")?;
+                writeln!(stdout, "error: {err}")?;
             }
         }
-        stdout().flush()?;
+        stdout.flush()?;
     }
 
     let interaction = Interaction {
@@ -136,15 +139,35 @@ async fn main() -> Result<()> {
     serde_json::to_writer_pretty(&file, &interaction).context("writing file")?;
     file.flush().context("flush")?;
 
-    writeln!(lock)?;
-    stdout().flush()?;
+    writeln!(stdout)?;
+    stdout.flush()?;
     Ok(())
 }
 
+fn get_input(cli: &Cli, stdout: &mut impl Write) -> Result<String> {
+    if !cli.input.is_empty() {
+        Ok(cli.input.join(" "))
+    } else if atty::is(Stream::Stdin) {
+        writeln!(stdout, "Enter your input (finish with ^D): ")?;
+        let mut buf = String::new();
+        stdin()
+            .lock()
+            .read_to_string(&mut buf)
+            .context("reading stdin")?;
+        Ok(buf)
+    } else {
+        let mut buf = String::new();
+        stdin()
+            .lock()
+            .read_to_string(&mut buf)
+            .context("reading stdin from pipe")?;
+        Ok(buf)
+    }
+}
 fn ensure_cache_dir_exists() -> Result<PathBuf> {
     let projects = ProjectDirs::from("net", "joshka", "ja").context("No valid home directory")?;
     let cache_dir = projects.cache_dir();
-    create_dir_all(&cache_dir).context("creating cache dir")?;
+    create_dir_all(cache_dir).context("creating cache dir")?;
     Ok(cache_dir.to_path_buf())
 }
 
