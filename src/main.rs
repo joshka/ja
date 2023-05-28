@@ -9,10 +9,11 @@ use async_openai::{
     Client,
 };
 use atty::Stream;
-use clap::{Parser, ValueEnum};
+use clap::Parser;
 use derive_builder::Builder;
 use directories::ProjectDirs;
 use futures::StreamExt;
+use ja::{Cli, Model};
 use serde::{Deserialize, Serialize};
 use std::{
     fmt::Debug,
@@ -23,41 +24,6 @@ use std::{
 };
 use time::format_description::well_known::Iso8601;
 use time::OffsetDateTime;
-
-#[derive(Parser, Debug)]
-#[command(author, version, about, long_about = None)]
-struct Cli {
-    #[arg(long, short = 'n', default_value = "1000")]
-    max_tokens: usize,
-    #[arg(long, short, default_value_t = Model::Gpt35)]
-    model: Model,
-    #[arg(long, short, default_value = "0.7")]
-    temperature: f32,
-    #[arg(long, short)]
-    verbose: bool,
-    #[arg(trailing_var_arg = true)]
-    input: Vec<String>,
-}
-
-#[derive(Debug, Copy, Clone, PartialEq, Eq, PartialOrd, Ord, ValueEnum)]
-#[value()]
-enum Model {
-    /// alias 3.5
-    #[value(name = "gpt-3.5-turbo", alias = "3.5")]
-    Gpt35,
-    /// alias 4
-    #[value(name = "gpt-4", alias = "4")]
-    Gpt4,
-}
-
-impl ToString for Model {
-    fn to_string(&self) -> String {
-        match self {
-            Model::Gpt35 => "gpt-3.5-turbo".into(),
-            Model::Gpt4 => "gpt-4".into(),
-        }
-    }
-}
 
 #[derive(Clone, Serialize, Debug, Builder, Deserialize, PartialEq)]
 struct Interaction {

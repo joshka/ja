@@ -1,3 +1,6 @@
+[workspace]
+members = ["xtask"]
+
 [package]
 name = "ja"
 version = "0.1.2"
