@@ -27,23 +27,29 @@ pub enum Command {
 #[derive(Debug, Args)]
 pub struct ChatCompletionArgs {
     /// ID of the model to use
-    #[arg(long, short = 'm', default_value = "gpt-3.5-turbo")]
+    #[arg(
+        long,
+        short = 'm',
+        default_value = "gpt-3.5-turbo",
+        hide_default_value = true,
+        hide_possible_values = true
+    )]
     model: Option<Model>,
 
     /// Sampling temperature
-    #[arg(long, short = 't', default_value = "0.7")]
+    #[arg(long, short = 't')]
     temperature: Option<f32>,
 
     /// Probability mass percentage
-    #[arg(long, short = 'p', default_value = "1.0")]
+    #[arg(long, short = 'p')]
     top_p: Option<f32>,
 
     /// Number of choices to generate for each input message
-    #[arg(long, short, default_value = "1")]
+    #[arg(long, short)]
     n: Option<u8>,
 
     /// Stream the resultt of the API call
-    #[arg(long, short, default_value = "true")]
+    #[arg(long, short)]
     stream: Option<bool>,
 
     /// Up to 4 sequences where the API will stop generating further tokens
@@ -56,12 +62,12 @@ pub struct ChatCompletionArgs {
 
     /// Number between -2.0 and 2.0. Positive values penalize new tokens based on whether they
     /// appear in the text so far
-    #[arg(long, default_value = "0.0")]
+    #[arg(long)]
     presence_penalty: Option<f32>,
 
     /// Number between -2.0 and 2.0. Positive values penalize new tokens based on their existing
     /// frequency in the text so far
-    #[arg(long, default_value = "0.0")]
+    #[arg(long)]
     frequency_penalty: Option<f32>,
 
     /// A unique identifier representing your end-user, which can help OpenAI to monitor and detect
@@ -87,7 +93,7 @@ pub struct ChatCompletionArgs {
 
 #[allow(dead_code)]
 impl ChatCompletionArgs {
-    pub fn to_chat(&self) -> CreateChatCompletionRequestArgs {
+    pub fn to_chat_builder(&self) -> CreateChatCompletionRequestArgs {
         let mut builder = CreateChatCompletionRequestArgs::default();
         self.model.map(|m| builder.model(m.to_string()));
         self.temperature.map(|t| builder.temperature(t));

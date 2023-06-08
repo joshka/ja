@@ -1,10 +1,11 @@
 use anyhow::{Context, Result};
 use async_openai::{
-    types::{ChatCompletionRequestMessageArgs, Role},
+    types::{ChatCompletionRequestMessage, ChatCompletionRequestMessageArgs, Role},
     Client,
 };
 use atty::Stream;
 use clap::Parser;
+use dialoguer::{theme::ColorfulTheme, Input, Select};
 use futures::StreamExt;
 use ja::{ChatCompletionArgs, Cli, Command};
 use std::io::Write;
@@ -33,7 +34,6 @@ fn init_tracing(cli: &Cli) {
     tracing_subscriber::fmt().with_max_level(level).init();
 }
 
-// TODO refactor this
 async fn chat(args: ChatCompletionArgs) -> Result<()> {
     match InputMode::from(&args) {
         InputMode::Cli(message) => cli_mode(message, args).await?,
@@ -43,77 +43,34 @@ async fn chat(args: ChatCompletionArgs) -> Result<()> {
     Ok(())
 }
 
-use dialoguer::{theme::ColorfulTheme, Input, Select};
-
-const CODE_OPTIMIZED: &str = "You are an AI programming assistant.
-Follow the user's requirements carefully & to the letter.
-Your responses must not be accusing, rude, controversial or defensive.
-Your responses should be informative and logical.
-You should always adhere to technical information.
-If the user asks for code or technical questions, you must provide code suggestions and adhere to technical information.
-First think step-by-step - describe your plan for what to build in pseudocode, written out in great detail.
-Then output the code in a single code block.
-Minimize any other prose.
-Keep your answers short and impersonal.
-Use Markdown formatting in your answers.
-Make sure to include the programming language name at the start of the Markdown code blocks.
-Avoid wrapping the whole response in triple backticks.
-The user works in an IDE called Visual Studio Code which has a concept for editors with open files, integrated unit test support, an output pane that shows the output of running the code as well as an integrated terminal.
-The active document is the source code the user is looking at right now.
-You can only give one reply for each conversation turn.
-You should always generate short suggestions for the next user turns that are relevant to the conversation and not offensive.
-";
+const CODE_PROMPT: &str = include_str!("./assets/code-prompt.txt");
+const EXPERTS_PROMPT: &str = include_str!("./assets/experts-prompt.txt");
 
 async fn interactive_mode(args: &ChatCompletionArgs) -> Result<()> {
     let mut stderr = std::io::stderr();
-    let selection = Select::with_theme(&ColorfulTheme::default())
-        .item("None")
-        .item("Code optimized")
-        .item("Custom")
-        .default(0)
-        .with_prompt("System prompt")
-        .interact_opt()?;
-    let system_prompt = match selection {
-        None => None,
-        Some(0) => None,
-        Some(1) => Some(CODE_OPTIMIZED.to_string()),
-        Some(2) => {
-            let input = Input::<String>::with_theme(&ColorfulTheme::default())
-                .with_prompt("Custom Prompt")
-                .with_initial_text("You are a helpful assistant.")
-                .interact_text()?;
-            Some(input)
-        }
-        Some(_) => unreachable!(),
-    };
     let mut messages = vec![];
-    if let Some(system) = &system_prompt {
-        let message = ChatCompletionRequestMessageArgs::default()
-            .content(system)
-            .role(Role::System)
-            .build()
-            .context("system")?;
-        messages.push(message);
+    if let Some(system_prompt) = get_system_prompt()? {
+        messages.push(
+            ChatCompletionRequestMessageArgs::default()
+                .role(Role::System)
+                .content(system_prompt)
+                .build()
+                .unwrap(),
+        );
     }
+    let chat_builder = &mut args.to_chat_builder();
     loop {
-        let user_input = Input::<String>::with_theme(&ColorfulTheme::default())
-            .with_prompt("User Prompt (type exit to exit)")
-            .default("exit".into())
-            .with_post_completion_text("User Prompt")
-            .interact_text()?;
+        let user_input = get_user_input()?;
         if user_input == "exit" {
             break;
         }
-        let message = ChatCompletionRequestMessageArgs::default()
-            .content(user_input)
-            .role(Role::User)
-            .build()?;
-        messages.push(message);
-        let request = args
-            .to_chat()
-            .messages(messages.clone())
-            .build()
-            .context("request")?;
+        messages.push(
+            ChatCompletionRequestMessageArgs::default()
+                .role(Role::User)
+                .content(user_input)
+                .build()?,
+        );
+        let request = chat_builder.messages(messages.clone()).build()?;
         let mut response = Client::new().chat().create_stream(request).await?;
         let mut role = Role::Assistant;
         let mut content = String::new();
@@ -133,14 +90,62 @@ async fn interactive_mode(args: &ChatCompletionArgs) -> Result<()> {
         }
         writeln!(stderr)?;
         stderr.flush()?;
-        let message = ChatCompletionRequestMessageArgs::default()
-            .role(role)
-            .content(content)
-            .build()
-            .unwrap();
-        messages.push(message);
+        messages.push(
+            ChatCompletionRequestMessageArgs::default()
+                .role(role)
+                .content(content)
+                .build()?,
+        );
     }
     Ok(())
+}
+
+#[allow(dead_code)]
+fn add_system_message(
+    messages: &mut Vec<ChatCompletionRequestMessage>,
+    system: &String,
+) -> Result<()> {
+    messages.push(
+        ChatCompletionRequestMessageArgs::default()
+            .role(Role::System)
+            .content(system)
+            .build()?,
+    );
+    Ok(())
+}
+
+fn get_system_prompt() -> Result<Option<String>, anyhow::Error> {
+    let selection = Select::with_theme(&ColorfulTheme::default())
+        .item("Default Prompt (You are a helpful assistant.)")
+        .item("Code rules prompt")
+        .item("Experts prompt")
+        .item("Custom")
+        .default(0)
+        .with_prompt("System prompt")
+        .interact_opt()?;
+    let system_prompt = match selection {
+        None => None,
+        Some(0) => None,
+        Some(1) => Some(CODE_PROMPT.to_string()),
+        Some(2) => Some(EXPERTS_PROMPT.to_string()),
+        Some(3) => {
+            let input = Input::<String>::with_theme(&ColorfulTheme::default())
+                .with_prompt("Custom Prompt")
+                .interact_text()?;
+            Some(input)
+        }
+        Some(_) => unreachable!(),
+    };
+    Ok(system_prompt)
+}
+
+fn get_user_input() -> Result<String, anyhow::Error> {
+    let user_input = Input::<String>::with_theme(&ColorfulTheme::default())
+        .with_prompt("User Prompt (type exit to exit)")
+        .default("exit".into())
+        .with_post_completion_text("User Prompt")
+        .interact_text()?;
+    Ok(user_input)
 }
 
 async fn cli_mode(message: String, args: ChatCompletionArgs) -> Result<()> {
@@ -163,7 +168,7 @@ async fn cli_mode(message: String, args: ChatCompletionArgs) -> Result<()> {
             .context("message")?,
     );
     let request = args
-        .to_chat()
+        .to_chat_builder()
         .messages(messages)
         .build()
         .context("request")?;
