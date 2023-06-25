@@ -1,15 +1,19 @@
-use anyhow::{Context, Result};
+use anyhow::{bail, Context, Result};
 use async_openai::{
-    types::{ChatCompletionRequestMessage, ChatCompletionRequestMessageArgs, Role},
+    types::{
+        ChatCompletionRequestMessage, ChatCompletionRequestMessageArgs,
+        CreateChatCompletionRequestArgs, Role,
+    },
     Client,
 };
 use atty::Stream;
+
 use clap::Parser;
 use dialoguer::{theme::ColorfulTheme, Input, Select};
 use futures::StreamExt;
-use ja::{ChatCompletionArgs, Cli, Command};
+use ja::cli::{ChatCommandArgs, Cli, Command};
 use std::io::Write;
-use tracing::{info, metadata::LevelFilter, warn};
+use tracing::{info, metadata::LevelFilter};
 
 #[tokio::main]
 async fn main() -> Result<()> {
@@ -19,7 +23,7 @@ async fn main() -> Result<()> {
     let command = cli.command.unwrap_or(Command::Chat(cli.chat));
     match command {
         Command::Chat(args) => chat(args).await?,
-        _ => warn!("unimplemented command"),
+        _ => bail!("command not implemented"),
     }
 
     Ok(())
@@ -34,9 +38,9 @@ fn init_tracing(cli: &Cli) {
     tracing_subscriber::fmt().with_max_level(level).init();
 }
 
-async fn chat(args: ChatCompletionArgs) -> Result<()> {
+async fn chat(args: ChatCommandArgs) -> Result<()> {
     match InputMode::from(&args) {
-        InputMode::Cli(message) => cli_mode(message, args).await?,
+        InputMode::Cli(message) => cli_mode(message, &args).await?,
         InputMode::Pipe => todo!(),
         InputMode::Interactive => interactive_mode(&args).await?,
     }
@@ -47,7 +51,7 @@ const CODE_PROMPT: &str = include_str!("./assets/code-prompt.md");
 const EXPERTS_PROMPT: &str = include_str!("./assets/experts-interview.md");
 const PROMPT_ENGINEER_PROMPT: &str = include_str!("./assets/prompt-engineer.md");
 
-async fn interactive_mode(args: &ChatCompletionArgs) -> Result<()> {
+async fn interactive_mode(args: &ChatCommandArgs) -> Result<()> {
     let mut stderr = std::io::stderr();
     let mut messages = vec![];
     if let Some(system_prompt) = get_system_prompt()? {
@@ -59,7 +63,7 @@ async fn interactive_mode(args: &ChatCompletionArgs) -> Result<()> {
                 .unwrap(),
         );
     }
-    let chat_builder = &mut args.to_chat_builder();
+    let mut chat_builder: CreateChatCompletionRequestArgs = args.into();
     loop {
         let user_input = get_user_input()?;
         if user_input == "exit" {
@@ -151,7 +155,7 @@ fn get_user_input() -> Result<String, anyhow::Error> {
     Ok(user_input)
 }
 
-async fn cli_mode(message: String, args: ChatCompletionArgs) -> Result<()> {
+async fn cli_mode(message: String, args: &ChatCommandArgs) -> Result<()> {
     let mut stdout = std::io::stdout();
     info!("message: {}", message);
     let mut messages = vec![];
@@ -170,11 +174,8 @@ async fn cli_mode(message: String, args: ChatCompletionArgs) -> Result<()> {
             .build()
             .context("message")?,
     );
-    let request = args
-        .to_chat_builder()
-        .messages(messages)
-        .build()
-        .context("request")?;
+    let mut chat_builder: CreateChatCompletionRequestArgs = args.into();
+    let request = chat_builder.messages(messages).build().context("request")?;
     info!("request: {:?}", request);
     let mut stream = Client::new().chat().create_stream(request).await?;
     while let Some(response) = stream.next().await {
@@ -208,7 +209,7 @@ enum InputMode {
 }
 
 impl InputMode {
-    fn from(args: &ChatCompletionArgs) -> Self {
+    fn from(args: &ChatCommandArgs) -> Self {
         if let Some(ref message) = args.message {
             InputMode::Cli(message.join(" "))
         } else if atty::is(Stream::Stdin) {

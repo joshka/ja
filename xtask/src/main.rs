@@ -3,11 +3,12 @@ use cli_xtask::{
     config::{ConfigBuilder, DistConfigBuilder},
     workspace, Result, Xtask,
 };
+use ja::cli::Cli;
 
 fn main() -> Result<()> {
     let workspace = workspace::current();
     let (dist, package) = DistConfigBuilder::from_root_package(workspace)?;
-    let command = ja::Cli::command();
+    let command = Cli::command();
     let target = package
         .target_by_name("ja", "bin")?
         .command(command) // this allows us to use the clap to generate a manpage
