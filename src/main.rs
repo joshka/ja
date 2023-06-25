@@ -50,6 +50,7 @@ async fn chat(args: ChatCommandArgs) -> Result<()> {
 const CODE_PROMPT: &str = include_str!("./assets/code-prompt.md");
 const EXPERTS_PROMPT: &str = include_str!("./assets/experts-interview.md");
 const PROMPT_ENGINEER_PROMPT: &str = include_str!("./assets/prompt-engineer.md");
+const CODE_REVIEW_PROMPT: &str = include_str!("./assets/code-review.md");
 
 async fn interactive_mode(args: &ChatCommandArgs) -> Result<()> {
     let mut stderr = std::io::stderr();
@@ -125,6 +126,7 @@ fn get_system_prompt() -> Result<Option<String>, anyhow::Error> {
         .item("Code rules prompt")
         .item("Experts prompt")
         .item("Prompt Engineer")
+        .item("Code Review")
         .item("Custom")
         .default(0)
         .with_prompt("System prompt")
@@ -135,7 +137,9 @@ fn get_system_prompt() -> Result<Option<String>, anyhow::Error> {
         Some(1) => Some(CODE_PROMPT.to_string()),
         Some(2) => Some(EXPERTS_PROMPT.to_string()),
         Some(3) => Some(PROMPT_ENGINEER_PROMPT.to_string()),
-        Some(4) => {
+        Some(4) => Some(PROMPT_ENGINEER_PROMPT.to_string()),
+        Some(5) => Some(CODE_REVIEW_PROMPT.to_string()),
+        Some(6) => {
             let input = Input::<String>::with_theme(&ColorfulTheme::default())
                 .with_prompt("Custom Prompt")
                 .interact_text()?;
