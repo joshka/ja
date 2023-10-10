@@ -137,9 +137,8 @@ fn get_system_prompt() -> Result<Option<String>, anyhow::Error> {
         Some(1) => Some(CODE_PROMPT.to_string()),
         Some(2) => Some(EXPERTS_PROMPT.to_string()),
         Some(3) => Some(PROMPT_ENGINEER_PROMPT.to_string()),
-        Some(4) => Some(PROMPT_ENGINEER_PROMPT.to_string()),
-        Some(5) => Some(CODE_REVIEW_PROMPT.to_string()),
-        Some(6) => {
+        Some(4) => Some(CODE_REVIEW_PROMPT.to_string()),
+        Some(5) => {
             let input = Input::<String>::with_theme(&ColorfulTheme::default())
                 .with_prompt("Custom Prompt")
                 .interact_text()?;
