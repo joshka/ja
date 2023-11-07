@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+## [0.1.4](https://github.com/joshka/ja/compare/ja-v0.1.3...ja-v0.1.4) - 2023-11-07
+
+### Other
+- add 0.1.3 to CHANGELOG
+- configure release-plz
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
 ## [Unreleased] - ReleaseDate
 
 ### Ci
