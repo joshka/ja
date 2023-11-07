@@ -1,6 +1,6 @@
 Output "target/demo.gif"
-Set Theme "OceanicMaterial"
-Set Width 1200
+Set Theme "Aardvark Blue"
+Set Width 1600
 Set Height 400
 Hide
 Type "cargo run --quiet"
@@ -9,10 +9,13 @@ Sleep 2
 Show
 Sleep 2
 Enter
-Sleep 1
-Type "what is 5x9"
+Sleep 2
 Enter
 Sleep 2
+Type "What is the meaning of life?"
+Enter
+Sleep 6
 Type "exit"
-Enter
 Sleep 2
+Hide
+Enter
