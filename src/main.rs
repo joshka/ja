@@ -56,9 +56,7 @@ const CODE_REVIEW_PROMPT: &str = include_str!("./assets/code-review.md");
 async fn interactive_mode(args: &ChatCommandArgs) -> Result<()> {
     let mut stderr = std::io::stderr();
     let mut messages = vec![];
-    let Some(model) = get_model(args.model.unwrap_or_default())? else {
-        return Ok(());
-    };
+    let model = get_model(args.model.unwrap_or_default())?;
     if let Some(system_prompt) = get_system_prompt()? {
         messages.push(
             ChatCompletionRequestMessageArgs::default()
@@ -67,9 +65,7 @@ async fn interactive_mode(args: &ChatCommandArgs) -> Result<()> {
                 .build()
                 .unwrap(),
         );
-    } else {
-        return Ok(());
-    };
+    }
     let mut chat_builder: CreateChatCompletionRequestArgs = args.into();
     chat_builder.model(model.to_string());
     loop {
@@ -127,15 +123,15 @@ fn add_system_message(
     Ok(())
 }
 
-fn get_model(default: Model) -> anyhow::Result<Option<Model>> {
+fn get_model(default: Model) -> anyhow::Result<Model> {
     match Select::with_theme(&ColorfulTheme::default())
         .items(Model::VARIANTS)
         .default(default as usize)
         .with_prompt("Model (Escape to exit)")
         .interact_opt()?
     {
-        None => Ok(None),
-        Some(selection) => Ok(Model::from_repr(selection)),
+        None => bail!("No model selected"),
+        Some(selection) => Ok(Model::from_repr(selection).unwrap_or_default()),
     }
 }
 
@@ -151,7 +147,7 @@ fn get_system_prompt() -> anyhow::Result<Option<String>> {
         .with_prompt("System prompt (Escape to exit)")
         .interact_opt()?;
     let system_prompt = match selection {
-        None => None,
+        None => bail!("No system prompt selected"),
         Some(0) => None,
         Some(1) => Some(CODE_PROMPT.to_string()),
         Some(2) => Some(EXPERTS_PROMPT.to_string()),
