@@ -11,8 +11,9 @@ use atty::Stream;
 use clap::Parser;
 use dialoguer::{theme::ColorfulTheme, Input, Select};
 use futures::StreamExt;
-use ja::cli::{ChatCommandArgs, Cli, Command};
+use ja::cli::{ChatCommandArgs, Cli, Command, Model};
 use std::io::Write;
+use strum::VariantNames;
 use tracing::{info, metadata::LevelFilter};
 
 #[tokio::main]
@@ -55,6 +56,9 @@ const CODE_REVIEW_PROMPT: &str = include_str!("./assets/code-review.md");
 async fn interactive_mode(args: &ChatCommandArgs) -> Result<()> {
     let mut stderr = std::io::stderr();
     let mut messages = vec![];
+    let Some(model) = get_model(args.model.unwrap_or_default())? else {
+        return Ok(());
+    };
     if let Some(system_prompt) = get_system_prompt()? {
         messages.push(
             ChatCompletionRequestMessageArgs::default()
@@ -65,6 +69,7 @@ async fn interactive_mode(args: &ChatCommandArgs) -> Result<()> {
         );
     }
     let mut chat_builder: CreateChatCompletionRequestArgs = args.into();
+    chat_builder.model(model.to_string());
     loop {
         let user_input = get_user_input()?;
         if user_input == "exit" {
@@ -120,7 +125,19 @@ fn add_system_message(
     Ok(())
 }
 
-fn get_system_prompt() -> Result<Option<String>, anyhow::Error> {
+fn get_model(default: Model) -> anyhow::Result<Option<Model>> {
+    match Select::with_theme(&ColorfulTheme::default())
+        .items(Model::VARIANTS)
+        .default(default as usize)
+        .with_prompt("Model (Escape to exit)")
+        .interact_opt()?
+    {
+        None => Ok(None),
+        Some(selection) => Ok(Model::from_repr(selection)),
+    }
+}
+
+fn get_system_prompt() -> anyhow::Result<Option<String>> {
     let selection = Select::with_theme(&ColorfulTheme::default())
         .item("Default Prompt (You are a helpful assistant.)")
         .item("Code rules prompt")
@@ -129,7 +146,7 @@ fn get_system_prompt() -> Result<Option<String>, anyhow::Error> {
         .item("Code Review")
         .item("Custom")
         .default(0)
-        .with_prompt("System prompt")
+        .with_prompt("System prompt (Escape to exit)")
         .interact_opt()?;
     let system_prompt = match selection {
         None => None,

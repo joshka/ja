@@ -2,7 +2,7 @@ use std::path::PathBuf;
 
 use async_openai::types::CreateChatCompletionRequestArgs;
 use clap::{Args, Parser, Subcommand, ValueEnum};
-use strum_macros::Display;
+use strum_macros::{Display, EnumVariantNames, FromRepr};
 
 #[derive(Debug, Parser)]
 #[command(author, version, about, long_about = None)]
@@ -35,7 +35,7 @@ pub struct ChatCommandArgs {
         hide_default_value = true,
         // hide_possible_values = true
     )]
-    model: Option<Model>,
+    pub model: Option<Model>,
 
     /// Sampling temperature
     #[arg(long, short = 't')]
@@ -93,10 +93,24 @@ pub struct ChatCommandArgs {
 }
 
 // See https://platform.openai.com/docs/models
-#[derive(Debug, Display, Copy, Clone, PartialEq, Eq, PartialOrd, Ord, ValueEnum)]
+#[derive(
+    Debug,
+    Display,
+    Default,
+    Copy,
+    Clone,
+    PartialEq,
+    Eq,
+    PartialOrd,
+    Ord,
+    ValueEnum,
+    EnumVariantNames,
+    FromRepr,
+)]
 #[value()]
 pub enum Model {
     /// alias 3.5 (default - because it's fast and cheap)
+    #[default]
     #[strum(serialize = "gpt-3.5")]
     #[value(name = "gpt-3.5-turbo", alias = "3.5")]
     Gpt35Turbo,
