@@ -67,7 +67,9 @@ async fn interactive_mode(args: &ChatCommandArgs) -> Result<()> {
                 .build()
                 .unwrap(),
         );
-    }
+    } else {
+        return Ok(());
+    };
     let mut chat_builder: CreateChatCompletionRequestArgs = args.into();
     chat_builder.model(model.to_string());
     loop {
@@ -130,6 +132,7 @@ fn get_model(default: Model) -> anyhow::Result<Option<Model>> {
         .items(Model::VARIANTS)
         .default(default as usize)
         .with_prompt("Model (Escape to exit)")
+)
         .interact_opt()?
     {
         None => Ok(None),

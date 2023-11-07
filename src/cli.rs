@@ -111,7 +111,7 @@ pub struct ChatCommandArgs {
 pub enum Model {
     /// alias 3.5 (default - because it's fast and cheap)
     #[default]
-    #[strum(serialize = "gpt-3.5")]
+    #[strum(serialize = "gpt-3.5-turbo")]
     #[value(name = "gpt-3.5-turbo", alias = "3.5")]
     Gpt35Turbo,
 
