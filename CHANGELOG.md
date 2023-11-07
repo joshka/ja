@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.5](https://github.com/joshka/ja/compare/ja-v0.1.4...ja-v0.1.5) - 2023-11-07
+
+### Fixed
+- correctly handle when user selects the first system prompt / model
+
 ## [0.1.4](https://github.com/joshka/ja/compare/ja-v0.1.3...ja-v0.1.4) - 2023-11-07
 
 ### Other
