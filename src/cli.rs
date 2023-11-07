@@ -2,6 +2,7 @@ use std::path::PathBuf;
 
 use async_openai::types::CreateChatCompletionRequestArgs;
 use clap::{Args, Parser, Subcommand, ValueEnum};
+use strum_macros::Display;
 
 #[derive(Debug, Parser)]
 #[command(author, version, about, long_about = None)]
@@ -32,7 +33,7 @@ pub struct ChatCommandArgs {
         short = 'm',
         default_value = "gpt-3.5-turbo",
         hide_default_value = true,
-        hide_possible_values = true
+        // hide_possible_values = true
     )]
     model: Option<Model>,
 
@@ -91,25 +92,65 @@ pub struct ChatCommandArgs {
     pub message: Option<Vec<String>>,
 }
 
-#[derive(Debug, Copy, Clone, PartialEq, Eq, PartialOrd, Ord, ValueEnum)]
+// See https://platform.openai.com/docs/models
+#[derive(Debug, Display, Copy, Clone, PartialEq, Eq, PartialOrd, Ord, ValueEnum)]
 #[value()]
 pub enum Model {
-    /// alias 3.5
+    /// alias 3.5 (default - because it's fast and cheap)
+    #[strum(serialize = "gpt-3.5")]
     #[value(name = "gpt-3.5-turbo", alias = "3.5")]
-    Gpt35,
+    Gpt35Turbo,
+
+    #[strum(serialize = "gpt-3.5-turbo-0314")]
+    #[value(name = "gpt-3.5-turbo-0301")]
+    Gpt35Turbo0301,
+
+    #[strum(serialize = "gpt-3.5-turbo-0613")]
+    #[value(name = "gpt-3.5-turbo-0613")]
+    Gpt35Turbo0613,
+
+    #[strum(serialize = "gpt-3.5-turbo-1106")]
+    #[value(name = "gpt-3.5-turbo-1106")]
+    Gpt35Turbo1106,
+
+    /// alias 3.5-16k
+    #[strum(serialize = "gpt-3.5-16k")]
+    #[value(name = "gpt-3.5-turbo-16k", alias = "3.5-16k")]
+    Gpt35Turbo16k,
+
+    #[strum(serialize = "gpt-3.5-turbo-16k-0613")]
+    #[value(name = "gpt-3.5-turbo-16k-0613")]
+    Gpt35Turbo16k0613,
 
     /// alias 4
+    #[strum(serialize = "gpt-4")]
     #[value(name = "gpt-4", alias = "4")]
     Gpt4,
-}
 
-impl ToString for Model {
-    fn to_string(&self) -> String {
-        match self {
-            Model::Gpt35 => "gpt-3.5-turbo".into(),
-            Model::Gpt4 => "gpt-4".into(),
-        }
-    }
+    #[strum(serialize = "gpt-4-0314")]
+    #[value(name = "gpt-4-0314")]
+    Gpt40314,
+
+    #[strum(serialize = "gpt-4-0613")]
+    #[value(name = "gpt-4-0613")]
+    Gpt40613,
+
+    #[strum(serialize = "gpt-4-1106-preview")]
+    #[value(name = "gpt-4-1106-preview")]
+    Gpt41106Preview,
+
+    /// alias 4-32k
+    #[strum(serialize = "gpt-4-32k")]
+    #[value(name = "gpt-4-32k", alias = "4-32k")]
+    Gpt432k,
+
+    #[strum(serialize = "gpt-4-32k-0314")]
+    #[value(name = "gpt-4-32k-0314")]
+    Gpt432k0314,
+
+    #[strum(serialize = "gpt-4-32k-0613")]
+    #[value(name = "gpt-4-32k-0613")]
+    Gpt432k0613,
 }
 
 #[allow(dead_code)]
