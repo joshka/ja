@@ -1,7 +1,8 @@
 use anyhow::{bail, Context, Result};
 use async_openai::{
     types::{
-        ChatCompletionRequestMessage, ChatCompletionRequestMessageArgs,
+        ChatCompletionRequestAssistantMessageArgs, ChatCompletionRequestMessage,
+        ChatCompletionRequestSystemMessageArgs, ChatCompletionRequestUserMessageArgs,
         CreateChatCompletionRequestArgs, Role,
     },
     Client,
@@ -59,11 +60,10 @@ async fn interactive_mode(args: &ChatCommandArgs) -> Result<()> {
     let model = get_model(args.model.unwrap_or_default())?;
     if let Some(system_prompt) = get_system_prompt()? {
         messages.push(
-            ChatCompletionRequestMessageArgs::default()
-                .role(Role::System)
+            ChatCompletionRequestSystemMessageArgs::default()
                 .content(system_prompt)
-                .build()
-                .unwrap(),
+                .build()?
+                .into(),
         );
     }
     let mut chat_builder: CreateChatCompletionRequestArgs = args.into();
@@ -74,10 +74,10 @@ async fn interactive_mode(args: &ChatCommandArgs) -> Result<()> {
             break;
         }
         messages.push(
-            ChatCompletionRequestMessageArgs::default()
-                .role(Role::User)
+            ChatCompletionRequestUserMessageArgs::default()
                 .content(user_input)
-                .build()?,
+                .build()?
+                .into(),
         );
         let request = chat_builder.messages(messages.clone()).build()?;
         let mut response = Client::new().chat().create_stream(request).await?;
@@ -100,10 +100,11 @@ async fn interactive_mode(args: &ChatCommandArgs) -> Result<()> {
         writeln!(stderr)?;
         stderr.flush()?;
         messages.push(
-            ChatCompletionRequestMessageArgs::default()
+            ChatCompletionRequestAssistantMessageArgs::default()
                 .role(role)
                 .content(content)
-                .build()?,
+                .build()?
+                .into(),
         );
     }
     Ok(())
@@ -115,10 +116,11 @@ fn add_system_message(
     system: &String,
 ) -> Result<()> {
     messages.push(
-        ChatCompletionRequestMessageArgs::default()
+        ChatCompletionRequestSystemMessageArgs::default()
             .role(Role::System)
             .content(system)
-            .build()?,
+            .build()?
+            .into(),
     );
     Ok(())
 }
@@ -178,19 +180,20 @@ async fn cli_mode(message: String, args: &ChatCommandArgs) -> Result<()> {
     info!("message: {}", message);
     let mut messages = vec![];
     args.system.as_ref().map(|system| {
-        let message = ChatCompletionRequestMessageArgs::default()
+        let message = ChatCompletionRequestSystemMessageArgs::default()
             .content(system)
             .role(Role::System)
             .build()
-            .context("system")
-            .unwrap();
+            .unwrap_or_default()
+            .into();
         messages.push(message);
     });
     messages.push(
-        ChatCompletionRequestMessageArgs::default()
+        ChatCompletionRequestUserMessageArgs::default()
             .content(message)
             .build()
-            .context("message")?,
+            .context("message")?
+            .into(),
     );
     let mut chat_builder: CreateChatCompletionRequestArgs = args.into();
     let request = chat_builder.messages(messages).build().context("request")?;

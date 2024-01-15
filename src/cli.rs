@@ -31,7 +31,7 @@ pub struct ChatCommandArgs {
     #[arg(
         long,
         short = 'm',
-        default_value = "gpt-3.5-turbo",
+        default_value = "gpt-4-1106-preview",
         hide_default_value = true,
         // hide_possible_values = true
     )]
@@ -109,8 +109,7 @@ pub struct ChatCommandArgs {
 )]
 #[value()]
 pub enum Model {
-    /// alias 3.5 (default - because it's fast and cheap)
-    #[default]
+    /// alias 3.5
     #[strum(serialize = "gpt-3.5-turbo")]
     #[value(name = "gpt-3.5-turbo", alias = "3.5")]
     Gpt35Turbo,
@@ -149,6 +148,8 @@ pub enum Model {
     #[value(name = "gpt-4-0613")]
     Gpt40613,
 
+    /// November 2023 GPT4 preview (default - because it's fast and cheap)
+    #[default]
     #[strum(serialize = "gpt-4-1106-preview")]
     #[value(name = "gpt-4-1106-preview")]
     Gpt41106Preview,
