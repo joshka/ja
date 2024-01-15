@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.6](https://github.com/joshka/ja/compare/ja-v0.1.5...ja-v0.1.6) - 2024-01-15
+
+### Other
+- remove atty and cleanup clippy lints
+- update deps
+
 ## [0.1.5](https://github.com/joshka/ja/compare/ja-v0.1.4...ja-v0.1.5) - 2023-11-07
 
 ### Fixed
