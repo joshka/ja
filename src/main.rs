@@ -1,19 +1,10 @@
 use anyhow::{bail, Context, Result};
-use async_openai::{
-    types::{
-        ChatCompletionRequestAssistantMessageArgs, ChatCompletionRequestMessage,
-        ChatCompletionRequestSystemMessageArgs, ChatCompletionRequestUserMessageArgs,
-        CreateChatCompletionRequestArgs, Role,
-    },
-    Client,
-};
-use atty::Stream;
-
+use async_openai::{types::*, Client};
 use clap::Parser;
 use dialoguer::{theme::ColorfulTheme, Input, Select};
 use futures::StreamExt;
 use ja::cli::{ChatCommandArgs, Cli, Command, Model};
-use std::io::Write;
+use std::io::{stdin, IsTerminal, Write};
 use strum::VariantNames;
 use tracing::{info, metadata::LevelFilter};
 
@@ -85,10 +76,10 @@ async fn interactive_mode(args: &ChatCommandArgs) -> Result<()> {
         let mut content = String::new();
         while let Some(response) = response.next().await {
             let response = response?;
-            let choice = response.choices.get(0).unwrap();
+            let choice = response.choices.first().unwrap();
             if let Some(r) = &choice.delta.role {
                 writeln!(stderr, "{}:", role)?;
-                role = r.clone();
+                role = *r;
                 stderr.flush()?;
             }
             if let Some(token) = &choice.delta.content {
@@ -179,15 +170,14 @@ async fn cli_mode(message: String, args: &ChatCommandArgs) -> Result<()> {
     let mut stdout = std::io::stdout();
     info!("message: {}", message);
     let mut messages = vec![];
-    args.system.as_ref().map(|system| {
+    if let Some(system_prompt) = &args.system {
         let message = ChatCompletionRequestSystemMessageArgs::default()
-            .content(system)
+            .content(system_prompt)
             .role(Role::System)
-            .build()
-            .unwrap_or_default()
+            .build()?
             .into();
         messages.push(message);
-    });
+    }
     messages.push(
         ChatCompletionRequestUserMessageArgs::default()
             .content(message)
@@ -202,7 +192,7 @@ async fn cli_mode(message: String, args: &ChatCommandArgs) -> Result<()> {
     while let Some(response) = stream.next().await {
         match response {
             Ok(response) => {
-                let choice = response.choices.get(0).unwrap();
+                let choice = response.choices.first().unwrap();
                 if let Some(role) = &choice.delta.role {
                     writeln!(stdout, "{}:", role)?;
                     stdout.flush()?;
@@ -233,7 +223,7 @@ impl InputMode {
     fn from(args: &ChatCommandArgs) -> Self {
         if let Some(ref message) = args.message {
             InputMode::Cli(message.join(" "))
-        } else if atty::is(Stream::Stdin) {
+        } else if stdin().is_terminal() {
             InputMode::Interactive
         } else {
             InputMode::Pipe
