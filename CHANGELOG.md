@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.7](https://github.com/joshka/ja/compare/ja-v0.1.6...ja-v0.1.7) - 2024-01-25
+
+### Other
+- *(deps)* bump clap from 4.4.16 to 4.4.18 ([#14](https://github.com/joshka/ja/pull/14))
+- *(deps)* bump derive_builder from 0.12.0 to 0.13.0 ([#15](https://github.com/joshka/ja/pull/15))
+- *(deps)* bump cli-xtask from 0.6.1 to 0.8.0 ([#13](https://github.com/joshka/ja/pull/13))
+- *(deps)* bump async-openai from 0.18.0 to 0.18.1 ([#12](https://github.com/joshka/ja/pull/12))
+- Create dependabot.yml
+
 ## [0.1.6](https://github.com/joshka/ja/compare/ja-v0.1.5...ja-v0.1.6) - 2024-01-15
 
 ### Other
