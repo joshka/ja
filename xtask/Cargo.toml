@@ -7,7 +7,7 @@ publish = false
 
 [dependencies]
 clap = { version = "4.3.0", features = ["derive"] }
-cli-xtask = { version = "0.6.1", features = [
+cli-xtask = { version = "0.8.0", features = [
     "main",
     "bin-crate",
     "bin-crate-extra",
