@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.8](https://github.com/joshka/ja/compare/ja-v0.1.7...ja-v0.1.8) - 2024-01-30
+
+### Other
+- *(deps)* bump strum_macros from 0.25.3 to 0.26.1 ([#19](https://github.com/joshka/ja/pull/19))
+- *(deps)* bump strum from 0.25.0 to 0.26.1 ([#20](https://github.com/joshka/ja/pull/20))
+
 ## [0.1.7](https://github.com/joshka/ja/compare/ja-v0.1.6...ja-v0.1.7) - 2024-01-25
 
 ### Other
