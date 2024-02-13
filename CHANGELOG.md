@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.9](https://github.com/joshka/ja/compare/ja-v0.1.8...ja-v0.1.9) - 2024-02-13
+
+### Other
+- *(deps)* bump async-openai from 0.18.1 to 0.18.3 ([#24](https://github.com/joshka/ja/pull/24))
+
 ## [0.1.8](https://github.com/joshka/ja/compare/ja-v0.1.7...ja-v0.1.8) - 2024-01-30
 
 ### Other
