@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.10](https://github.com/joshka/ja/compare/ja-v0.1.9...ja-v0.1.10) - 2024-03-12
+
+### Other
+- *(deps)* bump serde from 1.0.195 to 1.0.197 ([#28](https://github.com/joshka/ja/pull/28))
+- *(deps)* bump tokio from 1.35.1 to 1.36.0 ([#22](https://github.com/joshka/ja/pull/22))
+
 ## [0.1.9](https://github.com/joshka/ja/compare/ja-v0.1.8...ja-v0.1.9) - 2024-02-13
 
 ### Other
