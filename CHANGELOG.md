@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.11](https://github.com/joshka/ja/compare/ja-v0.1.10...ja-v0.1.11) - 2024-03-19
+
+### Other
+- *(deps)* bump async-openai from 0.18.3 to 0.19.1 ([#34](https://github.com/joshka/ja/pull/34))
+- *(deps)* bump time from 0.3.31 to 0.3.34 ([#32](https://github.com/joshka/ja/pull/32))
+- *(deps)* bump derive_builder from 0.13.0 to 0.20.0 ([#33](https://github.com/joshka/ja/pull/33))
+- *(deps)* bump strum from 0.26.1 to 0.26.2 ([#35](https://github.com/joshka/ja/pull/35))
+- *(deps)* bump anyhow from 1.0.79 to 1.0.81 ([#36](https://github.com/joshka/ja/pull/36))
+
 ## [0.1.10](https://github.com/joshka/ja/compare/ja-v0.1.9...ja-v0.1.10) - 2024-03-12
 
 ### Other
