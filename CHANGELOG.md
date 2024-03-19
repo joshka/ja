@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.11](https://github.com/joshka/ja/compare/ja-v0.1.10...ja-v0.1.11) - 2024-03-19
+
+### Other
+- *(deps)* bump anyhow from 1.0.79 to 1.0.81 ([#36](https://github.com/joshka/ja/pull/36))
+
 ## [0.1.10](https://github.com/joshka/ja/compare/ja-v0.1.9...ja-v0.1.10) - 2024-03-12
 
 ### Other
