@@ -21,7 +21,7 @@ dialoguer = { version = "0.11.0" }
 directories = "5.0.1"
 futures = "0.3.30"
 serde = "1.0.197"
-serde_json = "1.0.114"
+serde_json = "1.0.115"
 strum = "0.26.2"
 strum_macros = "0.26"
 time = { version = "0.3.34", features = ["formatting"] }
