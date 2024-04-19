@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.12](https://github.com/joshka/ja/compare/ja-v0.1.11...ja-v0.1.12) - 2024-04-19
+
+### Other
+- *(deps)* bump rustls from 0.22.3 to 0.22.4 in the cargo group ([#48](https://github.com/joshka/ja/pull/48))
+- *(deps)* bump time from 0.3.34 to 0.3.36 ([#45](https://github.com/joshka/ja/pull/45))
+- *(deps)* bump anyhow from 1.0.81 to 1.0.82 ([#46](https://github.com/joshka/ja/pull/46))
+
 ## [0.1.11](https://github.com/joshka/ja/compare/ja-v0.1.10...ja-v0.1.11) - 2024-04-01
 
 ### Other
