@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.13](https://github.com/joshka/ja/compare/ja-v0.1.12...ja-v0.1.13) - 2024-04-24
+
+### Other
+- *(deps)* bump serde_json from 1.0.115 to 1.0.116 ([#49](https://github.com/joshka/ja/pull/49))
+- *(deps)* bump serde from 1.0.197 to 1.0.198 ([#50](https://github.com/joshka/ja/pull/50))
+
 ## [0.1.12](https://github.com/joshka/ja/compare/ja-v0.1.11...ja-v0.1.12) - 2024-04-19
 
 ### Other
