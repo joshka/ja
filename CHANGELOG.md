@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.14](https://github.com/joshka/ja/compare/ja-v0.1.13...ja-v0.1.14) - 2024-05-14
+
+### Other
+- Group dependabot PRs
+- *(deps)* bump serde from 1.0.199 to 1.0.200 ([#54](https://github.com/joshka/ja/pull/54))
+- *(deps)* bump serde from 1.0.198 to 1.0.199 ([#52](https://github.com/joshka/ja/pull/52))
+
 ## [0.1.13](https://github.com/joshka/ja/compare/ja-v0.1.12...ja-v0.1.13) - 2024-04-24
 
 ### Other
