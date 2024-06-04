@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.14](https://github.com/joshka/ja/compare/ja-v0.1.13...ja-v0.1.14) - 2024-06-04
+
+### Other
+- *(deps)* bump the all-dependencies group with 2 updates ([#63](https://github.com/joshka/ja/pull/63))
+- *(deps)* bump serde in the all-dependencies group ([#62](https://github.com/joshka/ja/pull/62))
+- --- ([#61](https://github.com/joshka/ja/pull/61))
+- *(deps)* bump the all-dependencies group with 4 updates ([#59](https://github.com/joshka/ja/pull/59))
+- Group dependabot PRs
+- *(deps)* bump serde from 1.0.199 to 1.0.200 ([#54](https://github.com/joshka/ja/pull/54))
+- *(deps)* bump serde from 1.0.198 to 1.0.199 ([#52](https://github.com/joshka/ja/pull/52))
+
 ## [0.1.13](https://github.com/joshka/ja/compare/ja-v0.1.12...ja-v0.1.13) - 2024-04-24
 
 ### Other
