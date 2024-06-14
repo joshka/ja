@@ -92,7 +92,6 @@ async fn interactive_mode(args: &ChatCommandArgs) -> Result<()> {
         stderr.flush()?;
         messages.push(
             ChatCompletionRequestAssistantMessageArgs::default()
-                .role(role)
                 .content(content)
                 .build()?
                 .into(),
@@ -108,7 +107,6 @@ fn add_system_message(
 ) -> Result<()> {
     messages.push(
         ChatCompletionRequestSystemMessageArgs::default()
-            .role(Role::System)
             .content(system)
             .build()?
             .into(),
@@ -173,7 +171,6 @@ async fn cli_mode(message: String, args: &ChatCommandArgs) -> Result<()> {
     if let Some(system_prompt) = &args.system {
         let message = ChatCompletionRequestSystemMessageArgs::default()
             .content(system_prompt)
-            .role(Role::System)
             .build()?
             .into();
         messages.push(message);

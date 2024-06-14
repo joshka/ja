@@ -2,7 +2,7 @@ use std::path::PathBuf;
 
 use async_openai::types::CreateChatCompletionRequestArgs;
 use clap::{Args, Parser, Subcommand, ValueEnum};
-use strum_macros::{Display, EnumVariantNames, FromRepr};
+use strum_macros::{Display, FromRepr, VariantNames};
 
 #[derive(Debug, Parser)]
 #[command(author, version, about, long_about = None)]
@@ -104,7 +104,7 @@ pub struct ChatCommandArgs {
     PartialOrd,
     Ord,
     ValueEnum,
-    EnumVariantNames,
+    VariantNames,
     FromRepr,
 )]
 #[value()]
