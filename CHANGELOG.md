@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.15](https://github.com/joshka/ja/compare/ja-v0.1.14...ja-v0.1.15) - 2024-06-14
+
+### Fixed
+- breaking changes from deps
+
+### Other
+- *(deps)* bump the all-dependencies group with 3 updates ([#64](https://github.com/joshka/ja/pull/64))
+
 ## [0.1.14](https://github.com/joshka/ja/compare/ja-v0.1.13...ja-v0.1.14) - 2024-06-04
 
 ### Other
