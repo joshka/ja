@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.16](https://github.com/joshka/ja/compare/ja-v0.1.15...ja-v0.1.16) - 2024-06-25
+
+### Other
+- *(deps)* bump the all-dependencies group with 2 updates ([#68](https://github.com/joshka/ja/pull/68))
+- *(deps)* bump async-openai in the all-dependencies group ([#66](https://github.com/joshka/ja/pull/66))
+
 ## [0.1.15](https://github.com/joshka/ja/compare/ja-v0.1.14...ja-v0.1.15) - 2024-06-14
 
 ### Fixed
