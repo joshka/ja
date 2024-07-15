@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.19](https://github.com/joshka/ja/compare/ja-v0.1.18...ja-v0.1.19) - 2024-07-15
+
+### Other
+- *(deps)* bump the all-dependencies group with 2 updates ([#73](https://github.com/joshka/ja/pull/73))
+
 ## [0.1.18](https://github.com/joshka/ja/compare/ja-v0.1.17...ja-v0.1.18) - 2024-07-08
 
 ### Other
