@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.20](https://github.com/joshka/ja/compare/ja-v0.1.19...ja-v0.1.20) - 2024-07-23
+
+### Other
+- *(deps)* bump tokio in the all-dependencies group ([#75](https://github.com/joshka/ja/pull/75))
+
 ## [0.1.19](https://github.com/joshka/ja/compare/ja-v0.1.18...ja-v0.1.19) - 2024-07-15
 
 ### Other
