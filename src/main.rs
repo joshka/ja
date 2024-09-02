@@ -100,20 +100,6 @@ async fn interactive_mode(args: &ChatCommandArgs) -> Result<()> {
     Ok(())
 }
 
-#[allow(dead_code)]
-fn add_system_message(
-    messages: &mut Vec<ChatCompletionRequestMessage>,
-    system: &String,
-) -> Result<()> {
-    messages.push(
-        ChatCompletionRequestSystemMessageArgs::default()
-            .content(system)
-            .build()?
-            .into(),
-    );
-    Ok(())
-}
-
 fn get_model(default: Model) -> anyhow::Result<Model> {
     match Select::with_theme(&ColorfulTheme::default())
         .items(Model::VARIANTS)
@@ -170,7 +156,7 @@ async fn cli_mode(message: String, args: &ChatCommandArgs) -> Result<()> {
     let mut messages = vec![];
     if let Some(system_prompt) = &args.system {
         let message = ChatCompletionRequestSystemMessageArgs::default()
-            .content(system_prompt)
+            .content(system_prompt.clone())
             .build()?
             .into();
         messages.push(message);
