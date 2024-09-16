@@ -13,7 +13,7 @@ keywords = ["cli", "openai", "gpt", "tui", "ai"]
 categories = ["command-line-utilities"]
 
 [dependencies]
-anyhow = "1.0.87"
+anyhow = "1.0.89"
 async-openai = "0.24.0"
 clap = { version = "4.5.17", features = ["derive"] }
 derive_builder = "0.20.1"
