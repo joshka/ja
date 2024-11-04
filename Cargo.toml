@@ -13,18 +13,18 @@ keywords = ["cli", "openai", "gpt", "tui", "ai"]
 categories = ["command-line-utilities"]
 
 [dependencies]
-anyhow = "1.0.90"
+anyhow = "1.0.92"
 async-openai = "0.25.0"
 clap = { version = "4.5.20", features = ["derive"] }
 derive_builder = "0.20.1"
 dialoguer = { version = "0.11.0" }
 directories = "5.0.1"
 futures = "0.3.31"
-serde = "1.0.210"
+serde = "1.0.214"
 serde_json = "1.0.132"
 strum = "0.26.3"
 strum_macros = "0.26"
 time = { version = "0.3.36", features = ["formatting"] }
-tokio = { version = "1.40.0", features = ["rt-multi-thread"] }
+tokio = { version = "1.41.0", features = ["rt-multi-thread"] }
 tracing = "0.1.40"
 tracing-subscriber = "0.3.18"
