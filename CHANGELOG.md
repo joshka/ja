@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.27](https://github.com/joshka/ja/compare/ja-v0.1.26...ja-v0.1.27) - 2024-12-09
+
+### Other
+
+- *(deps)* bump the all-dependencies group with 4 updates (#103)
+- *(deps)* bump anstream from 0.6.7 to 0.6.15 in the cargo group (#102)
+- *(deps)* bump the all-dependencies group with 3 updates (#100)
+
 ## [0.1.26](https://github.com/joshka/ja/compare/ja-v0.1.25...ja-v0.1.26) - 2024-11-20
 
 ### Other
