@@ -3,7 +3,7 @@ members = ["xtask"]
 
 [package]
 name = "ja"
-version = "0.1.27"
+version = "0.1.28"
 authors = ["Josh McKinney <joshka>"]
 edition = "2021"
 description = "ja (just ask) is a small CLI / TUI app that allows you to work with AI tools"

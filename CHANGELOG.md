@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.28](https://github.com/joshka/ja/compare/ja-v0.1.27...ja-v0.1.28) - 2024-12-16
+
+### Other
+
+- *(deps)* bump serde in the all-dependencies group (#104)
+
 ## [0.1.27](https://github.com/joshka/ja/compare/ja-v0.1.26...ja-v0.1.27) - 2024-12-09
 
 ### Other
