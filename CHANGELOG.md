@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.29](https://github.com/joshka/ja/compare/ja-v0.1.28...ja-v0.1.29) - 2025-01-13
+
+### Other
+
+- *(deps)* bump the all-dependencies group across 1 directory with 4 updates (#110)
+- *(deps)* bump the all-dependencies group with 2 updates (#108)
+- *(deps)* bump the all-dependencies group with 2 updates (#106)
+
 ## [0.1.28](https://github.com/joshka/ja/compare/ja-v0.1.27...ja-v0.1.28) - 2024-12-16
 
 ### Other
