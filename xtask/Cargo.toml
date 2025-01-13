@@ -6,8 +6,8 @@ publish = false
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-clap = { version = "4.5.23", features = ["derive"] }
-cli-xtask = { version = "0.10.0", features = [
+clap = { version = "4.5.26", features = ["derive"] }
+cli-xtask = { version = "0.10.1", features = [
     "main",
     "bin-crate",
     "bin-crate-extra",
