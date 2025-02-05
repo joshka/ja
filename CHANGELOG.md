@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.30](https://github.com/joshka/ja/compare/ja-v0.1.29...ja-v0.1.30) - 2025-02-05
+
+### Other
+
+- *(deps)* bump serde_json in the all-dependencies group (#114)
+- *(deps)* bump the all-dependencies group across 1 directory with 2 updates (#112)
+
 ## [0.1.29](https://github.com/joshka/ja/compare/ja-v0.1.28...ja-v0.1.29) - 2025-01-13
 
 ### Other
