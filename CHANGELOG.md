@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.30](https://github.com/joshka/ja/compare/ja-v0.1.29...ja-v0.1.30) - 2025-03-11
+
+### Other
+
+- *(deps)* bump the all-dependencies group with 3 updates ([#122](https://github.com/joshka/ja/pull/122))
+- *(deps)* bump ring from 0.17.7 to 0.17.13 in the cargo group ([#121](https://github.com/joshka/ja/pull/121))
+- *(deps)* bump the all-dependencies group across 1 directory with 6 updates ([#119](https://github.com/joshka/ja/pull/119))
+- *(deps)* bump serde_json in the all-dependencies group ([#114](https://github.com/joshka/ja/pull/114))
+- *(deps)* bump the all-dependencies group across 1 directory with 2 updates ([#112](https://github.com/joshka/ja/pull/112))
+
 ## [0.1.29](https://github.com/joshka/ja/compare/ja-v0.1.28...ja-v0.1.29) - 2025-01-13
 
 ### Other
