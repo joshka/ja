@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [Unreleased]
+
+## [0.1.32](https://github.com/joshka/ja/compare/ja-v0.1.31...ja-v0.1.32) - 2025-08-17
+
+### Other
+
+- *(deps)* bump actions/checkout from 4 to 5 ([#135](https://github.com/joshka/ja/pull/135))
+- *(deps)* bump the all-dependencies group with 3 updates ([#136](https://github.com/joshka/ja/pull/136))
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
 ## [0.1.31](https://github.com/joshka/ja/compare/ja-v0.1.30...ja-v0.1.31) - 2025-07-21
 
 ### Other
