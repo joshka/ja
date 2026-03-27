@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.32](https://github.com/joshka/ja/compare/ja-v0.1.31...ja-v0.1.32) - 2026-03-27
+
+### Other
+
+- *(deps)* bump bytes from 1.6.0 to 1.11.1 ([#151](https://github.com/joshka/ja/pull/151))
+- *(deps)* bump time from 0.3.44 to 0.3.47 ([#152](https://github.com/joshka/ja/pull/152))
+- *(deps)* bump tar from 0.4.43 to 0.4.45 ([#156](https://github.com/joshka/ja/pull/156))
+- *(deps)* bump rustls-webpki from 0.102.2 to 0.102.8 ([#157](https://github.com/joshka/ja/pull/157))
+- *(deps)* bump actions/checkout from 5 to 6 ([#146](https://github.com/joshka/ja/pull/146))
+- *(deps)* bump clap in the all-dependencies group ([#144](https://github.com/joshka/ja/pull/144))
+- *(deps)* bump the all-dependencies group across 1 directory with 8 updates ([#143](https://github.com/joshka/ja/pull/143))
+- *(deps)* bump actions/checkout from 4 to 5 ([#135](https://github.com/joshka/ja/pull/135))
+- *(deps)* bump the all-dependencies group with 3 updates ([#136](https://github.com/joshka/ja/pull/136))
+
 ## [0.1.31](https://github.com/joshka/ja/compare/ja-v0.1.30...ja-v0.1.31) - 2025-07-21
 
 ### Other
