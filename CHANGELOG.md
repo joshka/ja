@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.32](https://github.com/joshka/ja/compare/ja-v0.1.31...ja-v0.1.32) - 2026-06-27
+
+### Other
+
+- Archive the project and publish a final retirement release.
+
 ## [0.1.31](https://github.com/joshka/ja/compare/ja-v0.1.30...ja-v0.1.31) - 2025-07-21
 
 ### Other
