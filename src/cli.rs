@@ -1,6 +1,6 @@
 use std::path::PathBuf;
 
-use async_openai::types::CreateChatCompletionRequestArgs;
+use async_openai::types::chat::{CreateChatCompletionRequestArgs, StopConfiguration};
 use clap::{Args, Parser, Subcommand, ValueEnum};
 use strum_macros::{Display, FromRepr, VariantNames};
 
@@ -177,8 +177,18 @@ impl From<&ChatCommandArgs> for CreateChatCompletionRequestArgs {
         value.top_p.map(|p| builder.top_p(p));
         value.n.map(|n| builder.n(n));
         value.stream.map(|s| builder.stream(s));
-        value.stop.as_ref().map(|s| builder.stop(s));
-        value.max_tokens.map(|m| builder.max_tokens(m));
+        if let Some(stop) = value.stop.as_ref() {
+            match stop.as_slice() {
+                [] => {}
+                [single] => {
+                    builder.stop(StopConfiguration::String(single.clone()));
+                }
+                many => {
+                    builder.stop(StopConfiguration::StringArray(many.to_vec()));
+                }
+            }
+        }
+        value.max_tokens.map(|m| builder.max_tokens(u32::from(m)));
         value.presence_penalty.map(|p| builder.presence_penalty(p));
         value
             .frequency_penalty
