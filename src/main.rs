@@ -1,5 +1,5 @@
 use anyhow::{bail, Context, Result};
-use async_openai::{types::*, Client};
+use async_openai::{types::chat::*, Client};
 use clap::Parser;
 use dialoguer::{theme::ColorfulTheme, Input, Select};
 use futures::StreamExt;

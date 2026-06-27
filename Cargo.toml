@@ -14,7 +14,7 @@ categories = ["command-line-utilities"]
 
 [dependencies]
 anyhow = "1.0.100"
-async-openai = "0.35.0"
+async-openai = { version = "0.35.0", features = ["chat-completion"] }
 clap = { version = "4.5.51", features = ["derive"] }
 derive_builder = "0.20.1"
 dialoguer = { version = "0.12.0" }
